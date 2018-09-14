@@ -8,16 +8,16 @@ public class ButtonMasher : MonoBehaviour {
     public TextMesh scoreText; // display text for the player's score
     public TextMesh timerText; // display text for the player's timer remaining
     public float gameLength; //How many seconds will the game last
+    public AudioSource gameOverSound; //sound that will play when we run out of time
+    public TextMesh messageText; //Displays a message when the game ends
 
     private int score = 0; // the numerical data value of our score
     private float timeRemaining = 0; //Numerical time remaining
-    private bool gameRunning = true;
+    private bool gameRunning = false;
 
 	// Use this for initialization
 	void Start () {
         Debug.Log("Start method called");
-
-        timeRemaining = gameLength;
 
 	}// End of start
 	
@@ -32,6 +32,15 @@ public class ButtonMasher : MonoBehaviour {
         //Check if we have run out of time
         if (timeRemaining <= 0)
         {
+
+            //Only do this if we just now hit game over
+            if (gameRunning == true)
+            {
+                //play the game over sound
+                gameOverSound.Play();
+
+                messageText.text = "Time up! Score = " + score.ToString();
+            }
             //stop the game running
             gameRunning = false;
 
@@ -52,6 +61,23 @@ public class ButtonMasher : MonoBehaviour {
             // update visual score
             scoreText.text = score.ToString();
         }// End of if (gameRunning == true)
+
+        else
+        {
+            //Game is not running when we click the buttong
+            gameRunning = true;
+
+            timeRemaining = gameLength;
+
+            // tells the player how to play
+            messageText.text = "Mash the button!";
+
+            //Reset the score
+            score = 0;
+
+
+        }
+
     }// End of OnMouseDown
 
 }//End of Button Masher Class
